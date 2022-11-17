@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"inventory/encryption"
 	"inventory/internal/models"
 )
 
@@ -17,9 +18,14 @@ func (s *serv) RegisterUser(ctx context.Context, email, name, password string) e
 		return ErrUserAlreadyExists
 	}
 
-	//TODO: hash password
+	bb, err := encryption.Encrypt([]byte(password)) //arreglo de bytes de password y esto me retorna los bytes o un error
+	if err != nil {
+		return err
 
-	return s.repo.SaveUser(ctx, email, name, password)
+	}
+
+	pass := encryption.ToBase64(bb) // luego lo tenemos que pasar a string
+	return s.repo.SaveUser(ctx, email, name, pass)
 }
 
 func (s *serv) LoginUser(ctx context.Context, email, password string) (*models.User, error) {
@@ -29,11 +35,32 @@ func (s *serv) LoginUser(ctx context.Context, email, password string) (*models.U
 	}
 
 	//TODO: decrypt password
+	// descifrar la contraseña que viene desde la base de datos
+
+	bb, err := encryption.FromBase64(u.Password) //
+	if err != nil {
+		return nil, err
+
+	}
+
+	decryptedPassword, err := encryption.Decrypt(bb) // descifrar la contr
+	if err != nil {
+		return nil, err
+
+	}
+
+	if string(decryptedPassword) != password {
+		return nil, ErrInvalidCredentials
+	}
 
 	if u.Password != password {
 		return nil, ErrInvalidCredentials
 
 	}
-	return &models.User{}, nil
+	return &models.User{
+		ID:    int(u.ID),
+		Email: u.Email,
+		Name:  u.Name,
+	}, nil
 
 }

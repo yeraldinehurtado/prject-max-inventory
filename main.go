@@ -4,6 +4,7 @@ import (
 	"context"
 	"inventory/database"
 	"inventory/internal/repository"
+	"inventory/internal/service"
 	"inventory/settings"
 
 	"github.com/jmoiron/sqlx"
@@ -19,6 +20,7 @@ func main() {
 			settings.New,
 			database.New, // dependencia a la base de datos
 			repository.New,
+			service.New,
 		), // pasamos todas la funciones que nos devuelvan un struct
 		fx.Invoke(
 			func(db *sqlx.DB){
