@@ -34,8 +34,9 @@ create table USER_ROLES (
     foreign key (role_id) references ROLES(id)
 );
 
--- docker run -d --name mariadb -p 3306:3306 --env MARIADB_ROOT_PASSWORD=rootroot mariadb/server:latest
+-- docker run -d --name maria -p 3306:3306 --env MARIADB_ROOT_PASSWORD=rootroot mariadb:latest
 -- el primer puerto es el de mi pc 
 -- los dos puntos significa 'hacia'
 -- el segundo puerto es el puerto del contenedor
 -- con env pasamos variable de entorno
+-- Como salió error por el puerto, coloqué 8080:80
