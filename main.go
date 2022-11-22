@@ -23,16 +23,33 @@ func main() {
 			service.New,
 		), // pasamos todas la funciones que nos devuelvan un struct
 		fx.Invoke(
-			func(db *sqlx.DB){
+			func(db *sqlx.DB) {
 				_, err := db.Query("SELECT * FROM USERS")
-				if err!= nil {
-                    panic(err)
+				if err != nil {
+					panic(err)
 				}
-			},// revisar que la conexion haya sido exitosa
-		/* func (s *settings.Settings)  {
-			log.Println(s)
-		}, */
+			}, // revisar que la conexion haya sido exitosa
+			/* func (s *settings.Settings)  {
+				log.Println(s)
+			}, */
+			func(ctx context.Context, serv service.Service) {
+				err := serv.RegisterUser(ctx, "my@mail.com", "myname", "mypassword")
+				if err != nil {
+					panic(err)
+				}
+
+				u, err := serv.LoginUser(ctx, "my@mail.com", "mypassword")
+				if err != nil {
+					panic(err)
+				}
+
+				if u.Name != "myname" {
+					panic("wrong name")
+
+				}
+			},
 		), // ejecutar algun comando que necesitemos justo antes que la aplicacion empiece a correr
+
 	)
 
 	app.Run()

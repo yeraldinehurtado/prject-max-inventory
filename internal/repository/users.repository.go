@@ -30,10 +30,10 @@ func (r *repo) SaveUser(ctx context.Context, email, name, password string) error
 func (r *repo) GetUserByEmail(ctx context.Context, email string) (*entity.User, error) {
 	u := &entity.User{}
 	err := r.db.GetContext(ctx, &u, qryGetUserByEmail, email) // ejecuta el query, mapea las columnas a los parametros o propiedades de un struct que estemos pasando
-	if err!= nil {
-        return nil, err
-    }
-	
-	return u, err
+	if err != nil {
+		return nil, err
+	}
+
+	return u, nil
 
 }
