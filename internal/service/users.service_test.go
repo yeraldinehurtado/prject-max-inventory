@@ -99,14 +99,14 @@ func TestLoginUser(t *testing.T) {
 
 	for i := range testCases {
 		tc := testCases[i]
-		
+
 		t.Run(tc.Name, func(t *testing.T) {
 			t.Parallel()
 			repo.Mock.Test(t)
 
 			_, err := s.LoginUser(ctx, tc.Email, tc.Password) // referencia del service
 
-			if err!= tc.ExpectedError {
+			if err != tc.ExpectedError {
 
 				t.Errorf("Expected error: %v, got: %v", tc.ExpectedError, err)
 

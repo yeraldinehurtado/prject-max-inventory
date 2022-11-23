@@ -26,7 +26,7 @@ type MockService struct {
 
 	return r0
 }
-
+*/
 // AddUserRole provides a mock function with given fields: ctx, userID, roleID
 func (_m *MockService) AddUserRole(ctx context.Context, userID int64, roleID int64) error {
 	ret := _m.Called(ctx, userID, roleID)
@@ -40,7 +40,7 @@ func (_m *MockService) AddUserRole(ctx context.Context, userID int64, roleID int
 
 	return r0
 }
-
+/*
 // GetProduct provides a mock function with given fields: ctx, id
 func (_m *MockService) GetProduct(ctx context.Context, id int64) (*models.Product, error) {
 	ret := _m.Called(ctx, id)

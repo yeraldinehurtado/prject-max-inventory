@@ -34,6 +34,9 @@ create table USER_ROLES (
     foreign key (role_id) references ROLES(id)
 );
 
+INSERT into ROLES (id, name) values (1, 'admin'); -- administradores
+INSERT INTO ROLES (id, name) VALUES (2, 'seller'); -- vendedores
+INSERT into ROLES (id, name) values (3, 'customer'); --usuarios comunes
 -- docker run -d --name maria -p 3306:3306 --env MARIADB_ROOT_PASSWORD=rootroot mariadb:latest
 -- el primer puerto es el de mi pc 
 -- los dos puntos significa 'hacia'

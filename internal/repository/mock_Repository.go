@@ -82,7 +82,7 @@ func (_m *MockRepository) GetUserByEmail(ctx context.Context, email string) (*en
 }
 
 // GetUserRoles provides a mock function with given fields: ctx, userID
-/* func (_m *MockRepository) GetUserRoles(ctx context.Context, userID int64) ([]entity.UserRole, error) {
+func (_m *MockRepository) GetUserRoles(ctx context.Context, userID int64) ([]entity.UserRole, error) {
 	ret := _m.Called(ctx, userID)
 
 	var r0 []entity.UserRole
@@ -102,7 +102,7 @@ func (_m *MockRepository) GetUserByEmail(ctx context.Context, email string) (*en
 	}
 
 	return r0, r1
-} */
+}
 
 // RemoveUserRole provides a mock function with given fields: ctx, userID, roleID
 func (_m *MockRepository) RemoveUserRole(ctx context.Context, userID int64, roleID int64) error {
@@ -118,6 +118,7 @@ func (_m *MockRepository) RemoveUserRole(ctx context.Context, userID int64, role
 	return r0
 }
 
+/*
 // SaveProduct provides a mock function with given fields: ctx, name, description, price, createdBy
 func (_m *MockRepository) SaveProduct(ctx context.Context, name string, description string, price float32, createdBy int64) error {
 	ret := _m.Called(ctx, name, description, price, createdBy)
@@ -131,7 +132,7 @@ func (_m *MockRepository) SaveProduct(ctx context.Context, name string, descript
 
 	return r0
 }
-
+*/
 // SaveUser provides a mock function with given fields: ctx, email, name, password
 func (_m *MockRepository) SaveUser(ctx context.Context, email string, name string, password string) error {
 	ret := _m.Called(ctx, email, name, password)
