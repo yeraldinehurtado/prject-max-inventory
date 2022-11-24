@@ -64,3 +64,13 @@ func (s *serv) LoginUser(ctx context.Context, email, password string) (*models.U
 	}, nil
 
 }
+
+func (s *serv) AddUserRole(ctx context.Context, userID, roleID int64) error {
+	return s.repo.SaveUserRole(ctx, userID, roleID)
+
+}
+
+func (s *serv) RemoveUserRole(ctx context.Context, userID, roleID int64) error {
+	return s.repo.RemoveUserRole(ctx, userID, roleID)
+
+}

@@ -25,6 +25,8 @@ func TestMain(n *testing.M) {
 	repo.On("GetUserByEmail", mock.Anything, "test@exists.com").Return(u, nil)
 	repo.On("SaveUser", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)
 
+	repo.On("SaveUserRole", mock.Anything, mock.Anything, mock.Anything).Return(nil)
+
 	s = New(repo)
 
 	code := n.Run()
@@ -114,4 +116,41 @@ func TestLoginUser(t *testing.T) {
 
 		})
 	}
+}
+
+func TestAddUserRole(t *testing.T) {
+	testCases := []struct {
+        Name          	string
+        UserID 			int64
+		RoleID 			int64
+        ExpectedError 	error
+	}{
+		{
+            Name:          "AddUserRole_Success",
+            UserID:        1,
+            RoleID:        1,
+            ExpectedError: nil,
+	},
+}
+
+ctx := context.Background()
+
+for i := range testCases {
+	tc := testCases[i]
+
+    t.Run(tc.Name, func(t *testing.T) {
+        t.Parallel()
+
+		repo.Mock.Test(t)
+
+		err := s.AddUserRole(ctx, tc.UserID, tc.RoleID)
+
+		if err != tc.ExpectedError {
+        	t.Errorf("Expected error: %v, got: %v", tc.ExpectedError, err)
+		}
+
+	})
+
+}
+
 }
