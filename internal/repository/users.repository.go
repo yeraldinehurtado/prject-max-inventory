@@ -64,3 +64,15 @@ func (r *repo) RemoveUserRole(ctx context.Context, userID, roleID int64) error {
 	_, err := r.db.NamedExecContext(ctx, qryRemoveUserRole, data)
 	return err
 }
+
+func (r *repo) GetUserRoles(ctx context.Context, userID int64) ([]entity.UserRole, error) {
+	roles := []entity.UserRole{}
+
+	err := r.db.SelectContext(ctx, &roles, "SELECT user_id, role_id from USER_ROLES where user_id=?", userID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return roles, nil
+}
