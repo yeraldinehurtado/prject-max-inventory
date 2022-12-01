@@ -2,38 +2,8 @@ package service
 
 import (
 	"context"
-	"os"
 	"testing"
-
-	"inventory/encryption"
-	"inventory/internal/entity"
-	"inventory/internal/repository"
-
-	"github.com/stretchr/testify/mock"
 )
-
-var repo *repository.MockRepository
-var s Service
-
-func TestMain(n *testing.M) {
-	validPassword, _ := encryption.Encrypt([]byte("validPassword"))
-	encryptedPassword := encryption.ToBase64(validPassword)
-	u := &entity.User{Email: "test@exists.com", Password: encryptedPassword}
-
-	repo = &repository.MockRepository{}
-	repo.On("GetUserByEmail", mock.Anything, "test@test.com").Return(nil, nil)
-	repo.On("GetUserByEmail", mock.Anything, "test@exists.com").Return(u, nil)
-	repo.On("SaveUser", mock.Anything, mock.Anything, mock.Anything, mock.Anything).Return(nil)
-
-	repo.On("GetUserRoles", mock.Anything, int64(1)).Return([]entity.UserRole{{UserID: 1, RoleID: 1}}, nil)
-	repo.On("SaveUserRole", mock.Anything, mock.Anything, mock.Anything).Return(nil)
-	repo.On("RemoveUserRole", mock.Anything, mock.Anything, mock.Anything).Return(nil)
-
-	s = New(repo)
-
-	code := n.Run()
-	os.Exit(code)
-}
 
 func TestRegisterUser(t *testing.T) {
 	testCases := []struct {
@@ -165,37 +135,37 @@ func TestAddUserRole(t *testing.T) {
 
 func TestRemoveUserRole(t *testing.T) {
 	testCases := []struct {
-        Name          string
-        UserID        int64
-        RoleID        int64
-        ExpectedError error
+		Name          string
+		UserID        int64
+		RoleID        int64
+		ExpectedError error
 	}{
 		{
 			Name:          "RemoveUserRole_Success",
-            UserID:        1,
-            RoleID:        1,
-            ExpectedError: nil,
+			UserID:        1,
+			RoleID:        1,
+			ExpectedError: nil,
 		},
 		{
 			Name:          "RemoveUserRole_UserDoesNotHaveRole",
-            UserID:        1,
-            RoleID:        3,
-            ExpectedError: ErrRoleNotFound,
+			UserID:        1,
+			RoleID:        3,
+			ExpectedError: ErrRoleNotFound,
 		},
 	}
 	ctx := context.Background()
 
-    for i := range testCases {
+	for i := range testCases {
 		tc := testCases[i]
 
 		t.Run(tc.Name, func(t *testing.T) {
 			t.Parallel()
 
-            repo.Mock.Test(t)
+			repo.Mock.Test(t)
 
-            err := s.RemoveUserRole(ctx, tc.UserID, tc.RoleID)
+			err := s.RemoveUserRole(ctx, tc.UserID, tc.RoleID)
 
-            if err!= tc.ExpectedError {
+			if err != tc.ExpectedError {
 				t.Errorf("Expected error: %v, got: %v", tc.ExpectedError, err)
 			}
 		})

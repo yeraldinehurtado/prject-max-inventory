@@ -14,6 +14,10 @@ type Service interface {
 	LoginUser(ctx context.Context, email, password string) (*models.User, error)
 	AddUserRole(ctx context.Context, userID, roleID int64) error
 	RemoveUserRole(ctx context.Context, userID, roleID int64) error
+
+	GetProducts(ctx context.Context) ([]models.Product, error)
+	GetProduct(ctx context.Context, id int64) (*models.Product, error)
+	AddProdcut(ctx context.Context, product models.Product, userEmail string) error
 }
 
 type serv struct {
@@ -22,6 +26,6 @@ type serv struct {
 
 func New(repo repository.Repository) Service {
 	return &serv{
-        repo: repo,
-    }
+		repo: repo,
+	}
 }

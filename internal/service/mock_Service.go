@@ -14,7 +14,7 @@ type MockService struct {
 }
 
 // AddProdcut provides a mock function with given fields: ctx, product, userEmail
-/* func (_m *MockService) AddProdcut(ctx context.Context, product models.Product, userEmail string) error {
+func (_m *MockService) AddProdcut(ctx context.Context, product models.Product, userEmail string) error {
 	ret := _m.Called(ctx, product, userEmail)
 
 	var r0 error
@@ -26,7 +26,7 @@ type MockService struct {
 
 	return r0
 }
-*/
+
 // AddUserRole provides a mock function with given fields: ctx, userID, roleID
 func (_m *MockService) AddUserRole(ctx context.Context, userID int64, roleID int64) error {
 	ret := _m.Called(ctx, userID, roleID)
@@ -40,7 +40,7 @@ func (_m *MockService) AddUserRole(ctx context.Context, userID int64, roleID int
 
 	return r0
 }
-/*
+
 // GetProduct provides a mock function with given fields: ctx, id
 func (_m *MockService) GetProduct(ctx context.Context, id int64) (*models.Product, error) {
 	ret := _m.Called(ctx, id)
@@ -85,7 +85,7 @@ func (_m *MockService) GetProducts(ctx context.Context) ([]models.Product, error
 	}
 
 	return r0, r1
-} */
+}
 
 // LoginUser provides a mock function with given fields: ctx, email, password
 func (_m *MockService) LoginUser(ctx context.Context, email string, password string) (*models.User, error) {
