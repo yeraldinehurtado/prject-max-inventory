@@ -2,12 +2,15 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"inventory/database"
+	"inventory/internal/api"
 	"inventory/internal/repository"
 	"inventory/internal/service"
 	"inventory/settings"
 
 	//"github.com/jmoiron/sqlx"
+	"github.com/labstack/echo/v4"
 	"go.uber.org/fx"
 	//"log"
 )
@@ -21,8 +24,11 @@ func main() {
 			database.New, // dependencia a la base de datos
 			repository.New,
 			service.New,
+			api.New,
+			echo.New,
 		), // pasamos todas la funciones que nos devuelvan un struct
 		fx.Invoke(
+			setLifeCycle,
 		/* func(db *sqlx.DB) {
 			_, err := db.Query("SELECT * FROM USERS")
 			if err != nil {
@@ -54,4 +60,18 @@ func main() {
 
 	app.Run()
 
+}
+
+func setLifeCycle(lc fx.Lifecycle, a *api.API, s *settings.Settings, e *echo.Echo) {
+	lc.Append(fx.Hook{
+		OnStart: func(ctx context.Context) error {
+			address := fmt.Sprintf(":%s", s.Port)
+			go a.Start(e, address)
+
+			return nil
+		},
+		OnStop: func(ctx context.Context) error {
+			return nil
+		},
+	})
 }
